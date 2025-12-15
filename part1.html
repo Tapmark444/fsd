@@ -1,0 +1,40 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Translate Function</title>
+</head>
+<body>
+
+    <h2>Translate Text</h2>
+
+    <input type="text" id="inputText" placeholder="Enter text">
+    <button onclick="showTranslation()">Translate</button>
+
+    <p><strong>Output:</strong> <span id="output"></span></p>
+
+    <script>
+        function translate(text) {
+            let result = "";
+            let vowels = "aeiouAEIOU";
+
+            for (let char of text) {
+                if (char.match(/[a-zA-Z]/) && !vowels.includes(char)) {
+                    result += char + "o" + char;
+                } else {
+                    result += char;
+                }
+            }
+            return result;
+        }
+
+        function showTranslation() {
+            let input = document.getElementById("inputText").value;
+            document.getElementById("output").innerText = translate(input);
+        }
+    </script>
+
+</body>
+</html>
+
