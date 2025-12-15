@@ -1,0 +1,56 @@
+//question 8
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>User Form</title>
+
+    <script type="text/javascript">
+    //<![CDATA[
+        function checkAge(a) {
+            if (a.value <= 17) {
+                alert("Age must be greater than 17");
+                a.focus();
+            }
+        }
+
+        function checkWeight(w) {
+            if (w.value < 45 || w.value > 75) {
+                alert("Weight must be between 45 and 75");
+                w.focus();
+            }
+        }
+    //]]>
+    function submitForm() {
+    alert("Form submitted successfully!");
+    return false;  // prevent actual submission
+}
+
+    </script>
+</head>
+
+<body>
+    <h3>User Information</h3>
+
+    <form onsubmit="return submitForm();">
+        First Name:
+        <input type="text" /><br /><br />
+
+        Middle Initial:
+        <input type="text" maxlength="1" /><br /><br />
+
+        Last Name:
+        <input type="text" /><br /><br />
+
+        Age:
+        <input type="text" onblur="checkAge(this)" /><br /><br />
+
+        Weight:
+        <input type="text" onblur="checkWeight(this)" /><br /><br />
+
+        <input type="submit" value="Submit" />
+    </form>
+</body>
+</html>
