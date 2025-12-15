@@ -1,0 +1,39 @@
+<!-- QUESTION 6 -->
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>NotBad Function</title>
+</head>
+<body>
+
+<h3>NotBad Function Demo</h3>
+
+Sentence: <input type="text" id="sentence" size="50"><br><br>
+
+<button onclick="showResult()">Check</button>
+
+<p id="output"></p>
+
+<script>
+function notBad(str) {
+    let notIndex = str.indexOf("not");
+    let badIndex = str.indexOf("bad");
+
+    if (notIndex !== -1 && badIndex !== -1 && badIndex > notIndex) {
+        return str.slice(0, notIndex) + "good" + str.slice(badIndex + 3);
+    }
+    return str;
+}
+
+function showResult() {
+    let input = document.getElementById("sentence").value;
+    document.getElementById("output").innerText = notBad(input);
+}
+</script>
+
+</body>
+</html>
+
+
