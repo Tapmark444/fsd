@@ -1,0 +1,138 @@
+// QUESTION 7 
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stack & Queue Modules</title>
+</head>
+<body>
+
+<h2>Stack and Queue Demo (Modules)</h2>
+
+<h3>Stack Operations</h3>
+<input type="text" id="stackInput" placeholder="Enter value">
+<button onclick="stackPush()">Push</button>
+<button onclick="stackPop()">Pop</button>
+<p>Stack: <span id="stackOutput"></span></p>
+
+<h3>Queue Operations</h3>
+<input type="text" id="queueInput" placeholder="Enter value">
+<button onclick="queueEnqueue()">Enqueue</button>
+<button onclick="queueDequeue()">Dequeue</button>
+<p>Queue: <span id="queueOutput"></span></p>
+
+<script type="module">
+import { Stack } from './stack.js';
+import { Queue } from './queue.js';
+
+const stack = new Stack();
+const queue = new Queue();
+
+function updateStack() {
+    document.getElementById("stackOutput").innerText = stack.print();
+}
+
+function updateQueue() {
+    document.getElementById("queueOutput").innerText = queue.print();
+}
+
+// Stack functions
+window.stackPush = function() {
+    let val = document.getElementById("stackInput").value;
+    if(val) stack.push(val);
+    document.getElementById("stackInput").value = "";
+    updateStack();
+};
+
+window.stackPop = function() {
+    alert(stack.pop());
+    updateStack();
+};
+
+// Queue functions
+window.queueEnqueue = function() {
+    let val = document.getElementById("queueInput").value;
+    if(val) queue.enqueue(val);
+    document.getElementById("queueInput").value = "";
+    updateQueue();
+};
+
+window.queueDequeue = function() {
+    alert(queue.dequeue());
+    updateQueue();
+};
+</script>
+<script>
+/*
+//stack.js
+
+// QUESTION 7
+
+// stack.js
+export class Stack {
+    constructor() {
+        this.items = [];
+    }
+
+    push(element) {
+        this.items.push(element);
+    }
+
+    pop() {
+        if (this.isEmpty()) return "Stack is empty";
+        return this.items.pop();
+    }
+
+    peek() {
+        return this.isEmpty() ? "Stack is empty" : this.items[this.items.length - 1];
+    }
+
+    isEmpty() {
+        return this.items.length === 0;
+    }
+
+    print() {
+        return this.items.join(", ");
+    }
+}
+
+
+
+// queue.js
+
+// QUESTION 7
+
+// queue.js
+export class Queue {
+    constructor() {
+        this.items = [];
+    }
+
+    enqueue(element) {
+        this.items.push(element);
+    }
+
+    dequeue() {
+        if (this.isEmpty()) return "Queue is empty";
+        return this.items.shift();
+    }
+
+    front() {
+        return this.isEmpty() ? "Queue is empty" : this.items[0];
+    }
+
+    isEmpty() {
+        return this.items.length === 0;
+    }
+
+    print() {
+        return this.items.join(", ");
+    }
+}
+
+
+*/
+  
+</script>
+</body>
+</html>
