@@ -1,0 +1,81 @@
+// QUESTION 3
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Academic Data (Closures)</title>
+</head>
+<body>
+
+<h2>Student Academic Data Using Closures</h2>
+
+<label>USN:</label>
+<input type="text" id="usn"><br><br>
+
+<label>Subject Code:</label>
+<input type="text" id="subCode"><br><br>
+
+<label>Subject Name:</label>
+<input type="text" id="subName"><br><br>
+
+<label>CIE Marks:</label>
+<input type="number" id="cie"><br><br>
+
+<label>SEE Marks:</label>
+<input type="number" id="see"><br><br>
+
+<button onclick="storeStudent()">Submit</button>
+
+<h3>Output:</h3>
+<div id="output"></div>
+
+<script>
+// Closure-based Student Function
+function Student(usn, subCode, subName, cieMarks, seeMarks) {
+
+    // Private variables (CIE and SEE)
+    let cie = cieMarks;
+    let see = seeMarks;
+
+    return {
+        getDetails: function () {
+            return {
+                usn: usn,
+                subCode: subCode,
+                subName: subName // Make sure this matches input ID
+            };
+        },
+
+        // Public method to compute total — closure accesses private marks
+        getTotal: function () {
+            return cie + see;
+        }
+    };
+}
+
+function storeStudent() {
+    let usn = document.getElementById("usn").value;
+    let subCode = document.getElementById("subCode").value;
+    let subName = document.getElementById("subName").value; // Must match ID
+    let cie = parseInt(document.getElementById("cie").value) || 0;
+    let see = parseInt(document.getElementById("see").value) || 0;
+
+    const student = Student(usn, subCode, subName, cie, see);
+
+    const details = student.getDetails();
+    const total = student.getTotal();
+
+    document.getElementById("output").innerHTML =
+        `<strong>Student Details:</strong><br>
+         USN: ${details.usn}<br>
+         Subject Code: ${details.subCode}<br>
+         Subject Name: ${details.subName}<br>
+         <strong>Total Marks:</strong> ${total}`;
+}
+</script>
+
+</body>
+</html>
+
+
+
