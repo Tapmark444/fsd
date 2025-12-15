@@ -1,0 +1,47 @@
+// QUESTION 9
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Anonymous Functions Demo</title>
+</head>
+<body>
+
+<h2>Anonymous Functions Example</h2>
+
+<p>Enter two numbers:</p>
+<input type="number" id="num1" placeholder="First number">
+<input type="number" id="num2" placeholder="Second number">
+<br><br>
+<button onclick="compute()">Compute</button>
+
+<h3>Results:</h3>
+<div id="results"></div>
+
+<script>
+    // Anonymous function to calculate sum
+    const sum = function(a, b) {
+        return a + b;
+    };
+
+    // Anonymous function to check even/odd
+    const checkEvenOdd = function(num) {
+        return num % 2 === 0 ? "Even" : "Odd";
+    };
+
+    // Compute results dynamically
+    function compute() {
+        let a = Number(document.getElementById("num1").value);
+        let b = Number(document.getElementById("num2").value);
+
+        let total = sum(a, b);
+        let parity = checkEvenOdd(total);
+
+        document.getElementById("results").innerHTML = 
+            `<p>Sum of ${a} and ${b} is: ${total}</p>` +
+            `<p>The sum ${total} is: ${parity}</p>`;
+    }
+</script>
+
+</body>
+</html>
