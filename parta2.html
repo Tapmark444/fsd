@@ -1,0 +1,48 @@
+// QUESTION 2
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Month Number to Month Name</title>
+</head>
+<body>
+
+<h2>Month Converter Using Closures</h2>
+
+<label>Enter Month Number:</label>
+<input type="text" id="monthNumber">
+<button onclick="displayMonth()">Convert</button>
+
+<p><strong>Month Name:</strong> <span id="monthName"></span></p>
+
+<script>
+    // Closure: a function that remembers the array of month names
+    const getMonthName = (function () {
+        const months = [
+            "January", "February", "March", "April",
+            "May", "June", "July", "August",
+            "September", "October", "November", "December"
+        ];
+
+        return function (num) {
+            // Strip decimals
+            num = parseInt(num);
+
+            // Check for invalid input
+            if (isNaN(num) || num < 1 || num > 12) {
+                return "Bad Number";
+            }
+
+            return months[num - 1];
+        };
+    })();
+
+    function displayMonth() {
+        const input = document.getElementById("monthNumber").value;
+        const result = getMonthName(input);
+        document.getElementById("monthName").innerText = result;
+    }
+</script>
+
+</body>
+</html>
