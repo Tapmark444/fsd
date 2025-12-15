@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hospital Bed Management</title>
+</head>
+<body>
+    <h2>Hospital Bed Management System</h2>
+
+    <!-- =========================
+         ADD HOSPITAL
+         ========================= -->
+    <h3>Add Hospital</h3>
+    <form action="/hospitals" method="POST">
+        Hospital ID:
+        <input type="text" name="hid" required><br><br>
+
+        Name:
+        <input type="text" name="name" required><br><br>
+
+        Location:
+        <input type="text" name="location" required><br><br>
+
+        Total Beds:
+        <input type="number" name="total" required><br><br>
+
+        Occupied Beds:
+        <input type="number" name="occupied" required><br><br>
+
+        <button type="submit">Add Hospital</button>
+    </form>
+
+    <hr>
+
+    <!-- =========================
+         ADMIT PATIENT
+         ========================= -->
+    <h3>Admit Patient</h3>
+    <form action="/hospitals/admit" method="POST">
+        Hospital ID:
+        <input type="text" name="hid" required><br><br>
+
+        <button type="submit">Admit</button>
+    </form>
+
+    <hr>
+
+    <!-- =========================
+         LOW BED HOSPITALS
+         ========================= -->
+    <h3>Hospitals with Less Than 10 Available Beds</h3>
+    <button onclick="load()">Show Hospitals</button>
+    <ul id="list"></ul>
+
+    <script>
+        function load() {
+            fetch("/hospitals/lowbeds")
+                .then(res => res.json())
+                .then(data => {
+                    const list = document.getElementById("list");
+                    list.innerHTML = "";
+                    data.forEach(h => {
+                        const available =
+                            h.Total_Beds - h.Occupied_Beds;
+
+                        list.innerHTML +=
+                          `<li>
+                            ${h.Name} (${h.Location}) |
+                            Available Beds: ${available}
+                          </li>`;
+                    });
+                });
+        }
+    </script>
+  <!--
+  <script>
+const express = require("express");
+const { MongoClient } = require("mongodb");
+const path = require("path");
+
+const app = express();
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
+const url = "mongodb://127.0.0.1:27017";
+const client = new MongoClient(url);
+let hospitals;
+
+/* =========================
+   MongoDB Connection
+   ========================= */
+async function connectDB() {
+    await client.connect();
+    hospitals = client.db("hospitalDB").collection("hospitals");
+    console.log("MongoDB connected");
+}
+connectDB();
+
+/* =========================
+   GET → Load HTML
+   ========================= */
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "index.html"));
+});
+
+/* =========================
+   POST → Add Hospital
+   ========================= */
+app.post("/hospitals", async (req, res) => {
+    const { hid, name, location, total, occupied } = req.body;
+
+    await hospitals.insertOne({
+        Hospital_ID: hid,
+        Name: name,
+        Location: location,
+        Total_Beds: Number(total),
+        Occupied_Beds: Number(occupied)
+    });
+
+    res.redirect("/");
+});
+
+/* =========================
+   GET → Hospitals with < 10 available beds
+   ========================= */
+app.get("/hospitals/lowbeds", async (req, res) => {
+    const data = await hospitals.find({
+        $expr: {
+            $lt: [
+                { $subtract: ["$Total_Beds", "$Occupied_Beds"] },
+                10
+            ]
+        }
+    }).toArray();
+
+    res.json(data);
+});
+
+/* =========================
+   POST → Admit Patient (FIXED)
+   ========================= */
+app.post("/hospitals/admit", async (req, res) => {
+    const { hid } = req.body;
+
+    const result = await hospitals.updateOne(
+        { Hospital_ID: hid },
+        { $inc: { Occupied_Beds: 1 } }
+    );
+
+    if (result.matchedCount === 0) {
+        return res.send("Hospital ID not found <br><a href='/'>Go Back</a>");
+    }
+
+    res.send("Patient admitted successfully <br><a href='/'>Go Back</a>");
+});
+
+/* =========================
+   DEBUG: View All Hospitals (OPTIONAL)
+   ========================= */
+app.get("/hospitals", async (req, res) => {
+    const data = await hospitals.find().toArray();
+    res.json(data);
+});
+
+app.listen(3000, () => {
+    console.log("Server running on port 3000");
+});
+
+</script>
+  -->
+</body>
+</html>
