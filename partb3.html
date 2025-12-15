@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Internship Tracking System</title>
+</head>
+<body>
+    <h2>Internship Tracking System</h2>
+
+    <!-- =========================
+         ADD INTERNSHIP
+         ========================= -->
+    <h3>Add Internship</h3>
+    <form action="/internships" method="POST">
+        Student ID:
+        <input type="text" name="sid" required><br><br>
+
+        Name:
+        <input type="text" name="name" required><br><br>
+
+        Company:
+        <input type="text" name="company" required><br><br>
+
+        Duration:
+        <input type="text" name="duration" required><br><br>
+
+        Status:
+        <input type="text" name="status" value="Ongoing"><br><br>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <hr>
+
+    <!-- =========================
+         UPDATE STATUS (PUT)
+         ========================= -->
+    <h3>Update Internship Status</h3>
+    Internship ID:
+    <input type="text" id="iid"><br><br>
+
+    Status:
+    <select id="status">
+        <option>Ongoing</option>
+        <option>Completed</option>
+    </select><br><br>
+
+    <button onclick="updateStatus()">Update Status</button>
+
+    <hr>
+
+    <!-- =========================
+         VIEW INFOSYS INTERNS
+         ========================= -->
+    <h3>Infosys Interns</h3>
+    <button onclick="load()">Show Infosys Interns</button>
+    <ul id="list"></ul>
+
+    <script>
+        function load() {
+            fetch("/internships/infosys")
+                .then(res => res.json())
+                .then(data => {
+                    const list = document.getElementById("list");
+                    list.innerHTML = "";
+                    data.forEach(i => {
+                        list.innerHTML += `
+                          <li>
+                            <b>ID:</b> ${i._id}<br>
+                            ${i.Student_ID} | ${i.Name} | ${i.Company} |
+                            ${i.Duration} | ${i.Status}
+                          </li><br>`;
+                    });
+                });
+        }
+
+        function updateStatus() {
+            const id = document.getElementById("iid").value;
+            const status = document.getElementById("status").value;
+
+            fetch("/internships/" + id, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ status: status })
+            })
+            .then(res => res.json())
+            .then(data => alert(data.message));
+        }
+    </script>
+  <!--
+  <script>
+  const express = require("express");
+const { MongoClient, ObjectId } = require("mongodb");
+const path = require("path");
+
+const app = express();
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
+const url = "mongodb://127.0.0.1:27017";
+const client = new MongoClient(url);
+let internships;
+
+/* =========================
+   MongoDB Connection
+   ========================= */
+async function connectDB() {
+    await client.connect();
+    internships = client.db("internshipDB").collection("internships");
+    console.log("MongoDB connected");
+}
+connectDB();
+
+/* =========================
+   GET → Load HTML
+   ========================= */
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "index.html"));
+});
+
+/* =========================
+   POST → Add Internship
+   ========================= */
+app.post("/internships", async (req, res) => {
+    const { sid, name, company, duration, status } = req.body;
+
+    await internships.insertOne({
+        Student_ID: sid,
+        Name: name,
+        Company: company,
+        Duration: duration,
+        Status: status
+    });
+
+    res.redirect("/");
+});
+
+/* =========================
+   GET → Infosys Interns
+   ========================= */
+app.get("/internships/infosys", async (req, res) => {
+    const data = await internships.find({ Company: "Infosys" }).toArray();
+    res.json(data);
+});
+
+/* =========================
+   PUT → Update Internship Status
+   ========================= */
+app.put("/internships/:id", async (req, res) => {
+    const { status } = req.body;
+
+    const result = await internships.updateOne(
+        { _id: new ObjectId(req.params.id) },
+        { $set: { Status: status } }
+    );
+
+    if (result.modifiedCount === 0) {
+        return res.json({ message: "Update failed. Check Internship ID." });
+    }
+
+    res.json({ message: "Internship status updated successfully" });
+});
+
+app.listen(3000, () => {
+    console.log("Server running on port 3000");
+});
+
+</script>
+  -->
+</body>
+</html>
