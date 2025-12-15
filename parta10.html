@@ -1,0 +1,54 @@
+// QUESTION 10
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ticket Booking Counter</title>
+</head>
+<body>
+
+<h2>Ticket Booking Counter using Closures</h2>
+
+<label>Number of tickets to book:</label>
+<input type="number" id="ticketInput" min="1" value="1">
+<button onclick="bookTickets()">Book</button>
+
+<h3>Output:</h3>
+<div id="output"></div>
+
+<script>
+    // Outer function with closure
+    function ticketCounter() {
+        let tickets = 0; // private variable
+
+        // Inner function forming closure
+        return function bookTicket(n = 1) {
+            tickets += n;
+            document.getElementById("output").innerHTML += 
+                `Ticket(s) booked: ${n}. Total tickets: ${tickets}<br>`;
+        };
+    }
+
+    // Create closure
+    const book = ticketCounter();
+
+    // Function triggered on button click
+    function bookTickets() {
+        let n = Number(document.getElementById("ticketInput").value);
+        if (n > 0) {
+            book(n); // book n tickets
+        } else {
+            alert("Enter a valid number of tickets!");
+        }
+    }
+
+    // Initial booking of 3 tickets automatically (as per your previous requirement)
+    book(1);
+    book(1);
+    book(1);
+</script>
+
+</body>
+</html>
+
+
