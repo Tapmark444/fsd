@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Exam Fee</title>
+</head>
+<body>
+    <h2>Student Exam Fee Management</h2>
+
+    <!-- ADD STUDENT -->
+    <h3>Add Student</h3>
+    <form action="/students" method="POST">
+        Name:
+        <input type="text" name="name" required><br><br>
+
+        USN:
+        <input type="text" name="usn" required><br><br>
+
+        Semester:
+        <input type="number" name="sem" required><br><br>
+
+        Exam Fee:
+        <input type="number" name="fee"><br><br>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <hr>
+
+    <!-- DELETE UNPAID -->
+    <h3>Delete Unpaid Students</h3>
+    <button onclick="deleteUnpaid()">Delete Exam Fee = 0</button>
+
+    <hr>
+
+    <!-- VIEW ALL -->
+    <h3>All Students</h3>
+    <button onclick="load()">Show Students</button>
+    <ul id="list"></ul>
+
+    <script>
+        function load() {
+            fetch("/students")
+                .then(res => res.json())
+                .then(data => {
+                    const list = document.getElementById("list");
+                    list.innerHTML = "";
+                    data.forEach(s => {
+                        list.innerHTML +=
+                          `<li>${s.Student_name} | ${s.USN} | Sem ${s.Semester} | Fee: ${s.Exam_fee}</li>`;
+                    });
+                });
+        }
+
+        function deleteUnpaid() {
+            fetch("/students/unpaid", { method: "DELETE" })
+                .then(res => res.json())
+                .then(data => alert(data.message));
+        }
+    </script>
+  <!-- 
+  <script>
+const express = require("express");
+const { MongoClient } = require("mongodb");
+const path = require("path");
+
+const app = express();
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
+const url = "mongodb://127.0.0.1:27017";
+const client = new MongoClient(url);
+let students;
+
+/* MongoDB Connection */
+async function connectDB() {
+    await client.connect();
+    students = client.db("collegeDB").collection("students");
+    console.log("MongoDB connected");
+}
+connectDB();
+
+/* HOME → Load HTML */
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "index.html"));
+});
+
+/* =========================
+   POST → Add Student
+   ========================= */
+app.post("/students", async (req, res) => {
+    const { name, usn, sem, fee } = req.body;
+
+    await students.insertOne({
+        Student_name: name,
+        USN: usn,
+        Semester: sem,
+        Exam_fee: Number(fee)
+    });
+
+    res.redirect("/");
+});
+
+/* =========================
+   DELETE → Remove unpaid students
+   ========================= */
+app.delete("/students/unpaid", async (req, res) => {
+    const result = await students.deleteMany({
+        $or: [
+            { Exam_fee: 0 },
+            { Exam_fee: null }
+        ]
+    });
+
+    res.json({
+        message: "Unpaid students deleted",
+        deletedCount: result.deletedCount
+    });
+});
+
+/* =========================
+   GET → View All Students
+   ========================= */
+app.get("/students", async (req, res) => {
+    const data = await students.find().toArray();
+    res.json(data);
+});
+
+app.listen(3000, () => {
+    console.log("Server running on port 3000");
+});
+
+  
+  </script>
+  -->
+</body>
+</html>
