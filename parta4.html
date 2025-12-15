@@ -1,0 +1,35 @@
+// QUESTION 4
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pluralize Function</title>
+</head>
+<body>
+
+<h3>Pluralize Noun</h3>
+
+Number: <input type="number" id="num"><br><br>
+Noun: <input type="text" id="noun"><br><br>
+
+<button onclick="showPlural()">Submit</button>
+
+<p id="output"></p>
+
+<script>
+function pluralize(noun, count) {
+    // Simple pluralization by adding "s" if count != 1
+    let word = count === 1 ? noun : noun + "s";
+    return count + " " + word;
+}
+
+function showPlural() {
+    let count = parseInt(document.getElementById("num").value);
+    let noun = document.getElementById("noun").value.trim();
+    document.getElementById("output").innerText = pluralize(noun, count);
+}
+</script>
+
+</body>
+</html>
+
